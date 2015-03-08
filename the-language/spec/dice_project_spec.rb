@@ -1,8 +1,14 @@
 # Implement a DiceSet Class here:
 #
-# class DiceSet
-#   code ...
-# end
+class DiceSet
+
+  attr_reader :values
+
+  def roll(number_of_dice)
+    @values = Array.new(number_of_dice) { |dice| rand(6) + 1 }
+  end
+
+end
 #
 
 RSpec.describe "dice set" do
@@ -33,14 +39,18 @@ RSpec.describe "dice set" do
   it "changes the values when rolled again" do
     dice = DiceSet.new
 
-    dice.roll(5)
-    first_time = dice.values
+    (0..2).each do |i| #ensures randomness.  Still though there is the possibility that it returns the same all the time
 
-    dice.roll(5)
-    second_time = dice.values
+      dice.roll(5)
+      first_time = dice.values
 
-    expect( second_time ).not_to eq( first_time ),
-      "Two rolls should not be equal"
+      dice.roll(5)
+      second_time = dice.values
+
+      expect( second_time ).not_to eq( first_time ),
+        "Two rolls should not be equal"
+
+    end
 
     # THINK ABOUT IT:
     #
