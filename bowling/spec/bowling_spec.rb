@@ -31,7 +31,7 @@ RSpec.describe "A game of bowling" do
 
   it "can score with the odd strike" do
     rolls = [10,1,2,1,2,1,2,1,2,10,1,2,1,2,10,1,2]
-    expect(bowling.score(rolls)).to eql(57)
+    expect(bowling.score(rolls)).to eql(60)
   end
 
   it "can score with the last frame as all strikes" do
