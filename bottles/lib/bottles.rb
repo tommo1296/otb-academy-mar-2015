@@ -1,63 +1,78 @@
+
 class BottleNumber
+
+  def self.for(number_of_bottles)
+    case number_of_bottles
+    when 0 then BottleNumber0
+    when 1 then BottleNumber1
+    else
+      BottleNumber
+    end.new(number_of_bottles)
+  end
   
   def initialize(number_of_bottles)
     @number_of_bottles = number_of_bottles
   end
   
   def pronoun
-    if @number_of_bottles == 1
-      "it"
-    else
-      "one"
-    end
+    "one"
   end
   
   def count_bottles
-    if @number_of_bottles == 0
-      "no more"
-    else
-      @number_of_bottles.to_s
-    end
+    @number_of_bottles.to_s
   end
   
   def container
-    if @number_of_bottles == 1
-      "bottle"
-    else
-      "bottles"
-    end
+    "bottles"
   end
   
   def action
-    if @number_of_bottles.zero?
-      "Go to the store and buy some more, "
-    else
-      "Take #{pronoun} down and pass it around, "
-    end
+    "Take #{pronoun} down and pass it around, "
   end
   
   def next_bottle_count
-    if @number_of_bottles == 0
-      99
-    else
-      @number_of_bottles - 1
-    end
+    @number_of_bottles - 1
   end
   
   def bottles_left_count
-    BottleNumber.new(next_bottle_count).count_bottles
+    BottleNumber.for(next_bottle_count).count_bottles
   end
   
   def bottles_left_container
-    BottleNumber.new(next_bottle_count).container
+    BottleNumber.for(next_bottle_count).container
   end
   
+end
+
+class BottleNumber0 < BottleNumber
+  
+  def next_bottle_count
+    99
+  end  
+
+  def count_bottles
+    "no more"
+  end
+
+  def action
+    "Go to the store and buy some more, "
+  end
+end
+
+class BottleNumber1 < BottleNumber
+  def pronoun
+    "it"
+  end
+
+  def container
+    "bottle"
+  end
 end
 
 class Bottles
 
   def verse(number_of_bottles)
-    bottle_number = BottleNumber.new(number_of_bottles)
+    bottle_number = BottleNumber.for(number_of_bottles)
     "#{bottle_number.count_bottles.capitalize} #{bottle_number.container} of beer on the wall, "\
     "#{bottle_number.count_bottles} #{bottle_number.container} of beer.\n"\
     "#{bottle_number.action}"\
