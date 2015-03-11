@@ -16,6 +16,11 @@ RSpec.describe "Harry potter shop" do
       expect(book_shop.basket.price).to eq(40.00)
     end
 
+    it "should cost the same for any" do
+      book_shop.create_basket((1..5).map { 5 }) #create 5 books of book 5
+      expect(book_shop.basket.price).to eq(40.00)
+    end
+
   end
 
 end
