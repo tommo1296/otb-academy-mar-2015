@@ -8,13 +8,12 @@ class Bowling
 
   def score(rolls)
     @rolls = rolls
-    score = 0
     @frames = frames
 
     @frames.each do |frame|
-      score += frame.score
+      @score += frame.score
     end
-    return score
+    return @score
   end
 
   def frames
