@@ -3,6 +3,7 @@ class Bowling
   def initialize
     @max_frames = 10
     @score = 0
+    @frame_index = 0
   end
 
   def score(rolls)
@@ -17,7 +18,6 @@ class Bowling
   end
 
   def frames
-    @frame_index = 0
     frames = []
     frame = Frame.new
 
