@@ -2,13 +2,14 @@ class Bowling
 
   def initialize
     @max_frames = 10
-    @score = 0
     @frame_index = 0
+    @frames = []
+    @score = 0
   end
 
   def score(rolls)
     @rolls = rolls
-    @frames = frames
+    frames
 
     @frames.each do |frame|
       @score += frame.score
@@ -17,7 +18,6 @@ class Bowling
   end
 
   def frames
-    frames = []
     frame = Frame.new
 
     @rolls.each_with_index do |item, index|
@@ -27,13 +27,10 @@ class Bowling
         frame.add_to_frame(item, bonus_rolls(index))
 
         if frame.full?
-          @frame_index += 1
-          frames << frame
-          frame = Frame.new
+          frame = save_frame(frame)
         end
       end
     end
-    return frames
   end
 
   private
@@ -44,6 +41,12 @@ class Bowling
 
     def bonus_rolls(current_index)
       @rolls.slice(current_index+1, 2)
+    end
+
+    def save_frame(frame)
+      @frame_index += 1
+      @frames << frame
+      frame = Frame.new
     end
 end
 
