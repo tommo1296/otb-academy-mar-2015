@@ -4,6 +4,7 @@ class Basket
   def initialize
     @price = 0.00
     @books = []
+    @qtys = (0..4).map { 0 }
   end
 
   def add(book_id)
@@ -27,3 +28,5 @@ class BookShop
   end
 
 end
+
+#make books a hash { :book_id => 1, :qty => 5 }
