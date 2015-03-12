@@ -10,11 +10,39 @@
 # missing handler and any other supporting methods.
 
 class Proxy
+  attr_reader :messages
+
   def initialize(target_object)
     @object = target_object
     # ADD MORE CODE HERE
+    @messages = []
+    @method_counter = Hash.new()
   end
   # WRITE CODE HERE
+  def method_missing(method_name, *args, &block)
+
+    if @object.respond_to?(method_name)
+      @messages << method_name
+      @object.__send__(method_name, *args, &block)
+    else
+      super(method_name, *args, &block)
+    end
+  end
+
+  def called?(method_name)
+    @messages.include?(method_name)
+  end
+
+  def respond_to?(method_name)
+    @object.respond_to?(method_name)    
+  end
+
+  def number_of_times_called(method_name)
+    @messages.count(method_name)
+  end
+
+  private
+
 end
 
 RSpec.describe "the proxy object" do
