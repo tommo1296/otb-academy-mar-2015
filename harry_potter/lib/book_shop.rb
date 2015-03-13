@@ -1,32 +1,3 @@
-class Basket
-
-  def initialize
-    @price = 0.00
-    @books = []
-    @qtys = [0,0,0,0,0]
-  end
-
-  def add(book_id)
-    @books << book_id
-    update_quantity(book_id)
-  end
-
-  def price
-    @price = @qtys.reduce(:+) * 8.00
-
-    
-
-    return @price
-  end
-
-  private
-
-    def update_quantity(book_id)
-      @qtys[book_id - 1] += 1
-    end
-
-end
-
 class BookShop
   attr_reader :basket
 
@@ -34,12 +5,74 @@ class BookShop
     @basket = Basket.new
   end
 
-  def create_basket(items = [])
+  def update_basket(items = [])
     items.each do |item|
-      @basket.add(item)
+      @basket.add_book(item)
     end
   end
 
 end
 
-#make books a hash { :book_id => 1, :qty => 5 }
+class Basket
+  attr_reader :sets, :price
+
+  def initialize
+    @sets = []
+    @sets << []
+    @discounts = [0, 0.05, 0.1, 0.2, 0.25]
+  end
+
+  def add_book(book_id)
+    indexes = []
+
+    #get a list of indexes where the book_id isnt present
+    @sets.each_with_index do |set,index|
+      if !set.include?(book_id)
+        indexes << index
+      end
+    end
+
+    #depending on what is returned then add 
+    if indexes.empty?
+      create_new_set(book_id)
+    else
+      index = indexes.first
+      add_to_set(book_id, index)
+    end
+
+  end
+
+  def price
+    @price = 0 #price should be reset before this code is ran
+
+    #run through each set and total the set
+    iteration = 0
+    @sets.each do |set|
+      @price += set_price(set.count) - discount_amount(set.count)
+      iteration += 1
+    end
+    @price
+  end
+
+
+
+    def discount_amount(number_of_books)
+      discount = @discounts[number_of_books - 1]
+      apply_discount = set_price(number_of_books) * discount
+    end
+
+    def set_price(number_of_books)
+      number_of_books * 8.00
+    end
+
+    def add_to_set(book_id, index)
+      @sets[index] << book_id
+    end
+
+    def create_new_set(book_id)
+      new_set = []
+      new_set << book_id
+      @sets << new_set
+    end
+
+end
