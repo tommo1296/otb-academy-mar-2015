@@ -6,8 +6,9 @@ end
 World(ShoutyDomain)
 
 Given(/^"(.*?)" is at "(.*?)"$/) do |location, lat_long|
+  location_array = lat_long.split(",").map { |s| s.to_f }
   @locations ||= {}
-  @locations[location] = lat_long.split(",")
+  @locations[location] = Location.new(location_array[0],location_array[1])
 end
 
 Given(/^James is at "(.*?)"$/) do |location|
@@ -21,6 +22,11 @@ Given(/^Chris is at "(.*?)"$/) do |location|
 end
 
 When(/^Chris shouts "(.*?)"$/) do |message|
+  @the_shout = message
+  @chris.shout(@the_shout)
+end
+
+When(/^Chris shouts:$/) do |message|
   @the_shout = message
   @chris.shout(@the_shout)
 end
